@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c64615cf-f248-4f8f-ad58-86c0097cc77f" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="dataweavepractiseFlow" doc:id="60f788e0-4601-46cb-b0e4-e776c8580233" >
+		<http:listener doc:name="Listener" doc:id="9eab71d5-399b-4d8b-b2a9-844eb778b967" config-ref="HTTP_Listener_config" path="/post">
+			<http:response statusCode="#[201]" />
+			<http:error-response>
+				<http:body ><![CDATA[#[output text/plain --- error.errorMessage]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<http:request method="GET" doc:name="Request" doc:id="b34cf15e-ab08-4466-9542-2061813aa80f" url="http://scatter-gather-cloud.us-e2.cloudhub.io/scatter"/>
+		<ee:transform doc:name="Transform Message" doc:id="68ad4388-53b1-4d15-b658-bed97712bf60" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+(payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="317266b4-45e3-4507-ae6a-c45b23372cd7" message="after everything.......#[payload]"/>
+	</flow>
+</mule>
