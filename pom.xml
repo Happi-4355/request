@@ -29,8 +29,21 @@
 				<artifactId>mule-maven-plugin</artifactId>
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+		                <cloudHubDeployment>
+		               <uri>https://anypoint.mulesoft.com</uri>
+		            <muleVersion>4.4.0</muleVersion>
+		            <username>smiley_4355</username>
+		             <password>Happiv@4355</password>
+		           <applicationName>request-cloud</applicationName>
+		           <environment>sandbox</environment>
+			       <workers>1</workers>
+		           <workerType>Micro</workerType>
+			        <objectStoreV2>true</objectStoreV2>
+		            </cloudHubDeployment>
+           </configuration>
 			</plugin>
-		</plugins>
+	     </plugins>
 	</build>
 
 	<dependencies>
